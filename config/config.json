@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "my-dialog-command-set": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/myDialog/MyDialogCommandSet.js",
+          "manifest": "./src/extensions/myDialog/MyDialogCommandSet.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "MyDialogCommandSetStrings": "lib/extensions/myDialog/loc/{locale}.js"
+  }
+}
