@@ -1,5 +1,4 @@
 import { exclude } from './excluded';
-import { ExportPane } from "./MyDialog";
 import { override } from "@microsoft/decorators";
 import { Log } from "@microsoft/sp-core-library";
 import {
@@ -42,36 +41,6 @@ export default class MyDialogCommandSet extends BaseListViewCommandSet<
     return Promise.resolve();
   }
 
-  cheangeColumnName(jsonList: any) {
-    let keys;
-    for (let i = 0; i < jsonList.length; i++) {
-      exclude.forEach((element) => {
-        try {
-          delete jsonList[i][element];
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    }
-    jsonList.forEach((column) => {
-      // this.context.listView.columns.map((el) => {
-      //   column[el.field.displayName] = column[el.field.internalName];
-      //   delete column[el.field.internalName];
-      // });
-      sp.web.lists.getByTitle(this.context.pageContext.list.title).fields.get()
-        .then(res => res.forEach(res => {
-          keys = Object.keys(column);
-          keys.forEach((el) => {
-            if(el === res.StaticName){
-              column[res.Title] = column[el];
-              delete column[el];
-            }
-          })
-
-        }));
-    });
-  }
-
   @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
     var checkboxes;
@@ -84,9 +53,4 @@ export default class MyDialogCommandSet extends BaseListViewCommandSet<
         throw new Error("Unknown command");
     }
   }
-}
-
-interface IFilters {
-  field: string;
-  checkboxes: any[];
 }
