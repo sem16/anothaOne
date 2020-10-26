@@ -3,16 +3,18 @@ import { sp } from "@pnp/sp-commonjs";
 import { ConvertToXlsx } from "./ConvertToXlsx";
 import { exclude } from "./excluded";
 
-export class FilterService{
+export class FilterService {
   private context;
   private filterString = "";
-  constructor(_context){
+  constructor(_context) {
     this.context = _context;
   }
 
   async cheangeColumnName(jsonList: any) {
     let keys;
-    let fields = await sp.web.lists.getByTitle(this.context.pageContext.list.title).fields.get();
+    let fields = await sp.web.lists
+      .getByTitle(this.context.pageContext.list.title)
+      .fields.get();
     for (let i = 0; i < jsonList.length; i++) {
       exclude.forEach((element) => {
         try {
@@ -23,17 +25,16 @@ export class FilterService{
       });
     }
     jsonList.forEach((column) => {
-      sp.web.lists.getByTitle(this.context.pageContext.list.title).fields.get()
-       fields.forEach(res => {
-          keys = Object.keys(column);
-          keys.forEach((el) => {
-            if(el === res.StaticName){
-              column[res.Title] = column[el];
-              delete column[el];
-            }
-          })
-
+      sp.web.lists.getByTitle(this.context.pageContext.list.title).fields.get();
+      fields.forEach((res) => {
+        keys = Object.keys(column);
+        keys.forEach((el) => {
+          if (el === res.StaticName) {
+            column[res.Title] = column[el];
+            delete column[el];
+          }
         });
+      });
     });
   }
 
@@ -64,7 +65,7 @@ export class FilterService{
     return filterString;
   }
 
-  public getService(){
+  public getService() {
     let filters;
     let checkboxes;
     try {
@@ -96,8 +97,7 @@ export class FilterService{
             for (let i = 0; i < checkboxes.length; i++) {
               //inserisce i checkbox selezionati
               if (
-                checkboxes.item(i).getAttribute("data-is-checked") ===
-                "true"
+                checkboxes.item(i).getAttribute("data-is-checked") === "true"
               ) {
                 //prende il tipo del elemento
                 let type: string;
@@ -136,8 +136,7 @@ export class FilterService{
               useSpecificDate = filters
                 .item(j)
                 .getElementsByClassName("FiltersPane-slider")
-                .item(0).childNodes[0].childNodes[1].childNodes[0]
-                .ariaDisabled;
+                .item(0).childNodes[0].childNodes[1].childNodes[0].ariaDisabled;
             } catch (e) { }
 
             if (useSpecificDate == "true") {
@@ -160,18 +159,7 @@ export class FilterService{
                   }
                 });
             } else {
-              let sliderOptions = [
-                -92,
-                -32,
-                -7,
-                -1,
-                0,
-                +1,
-                +7,
-                +32,
-                +92,
-                +365,
-              ];
+              let sliderOptions = [-92, -32, -7, -1, 0, +1, +7, +32, +92, +365];
               let sliderValue = parseInt(
                 filters
                   .item(j)
@@ -181,9 +169,7 @@ export class FilterService{
               );
               if (sliderValue != 0) {
                 let date = new Date();
-                date.setDate(
-                  date.getDate() + sliderOptions[sliderValue - 1]
-                );
+                date.setDate(date.getDate() + sliderOptions[sliderValue - 1]);
                 console.log(
                   `${date.getFullYear()}-${date.getMonth() + 1
                   }-${date.getDate()}`
@@ -212,7 +198,9 @@ export class FilterService{
           .items.filter(this.filterString)
           .get()
           .then((res) => {
-            this.cheangeColumnName(res).then( () => ConvertToXlsx.convertToXslx(res));
+            this.cheangeColumnName(res).then(() =>
+              ConvertToXlsx.convertToXslx(res)
+            );
             console.log(res);
           });
       } catch (e) {
@@ -224,9 +212,10 @@ export class FilterService{
         .items.filter(this.filterString)
         .get()
         .then((res) => {
-          this.cheangeColumnName(res).then( () => ConvertToXlsx.convertToXslx(res));
+          this.cheangeColumnName(res).then(() =>
+            ConvertToXlsx.convertToXslx(res)
+          );
           console.log(res);
-
         });
     }
   }

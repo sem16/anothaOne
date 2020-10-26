@@ -31,6 +31,8 @@ export interface IMyDialogCommandSetProperties {
 const LOG_SOURCE: string = "MyDialogCommandSet";
 
 export default class MyDialogCommandSet extends BaseListViewCommandSet<
+
+
   IMyDialogCommandSetProperties
   > {
   private _container = document.createElement("div");
@@ -43,7 +45,6 @@ export default class MyDialogCommandSet extends BaseListViewCommandSet<
 
   @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
-    var checkboxes;
     switch (event.itemId) {
       case "COMMAND_1":
         let filter:FilterService = new FilterService(this.context);
