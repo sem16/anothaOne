@@ -72,33 +72,6 @@ export default class MyDialogCommandSet extends BaseListViewCommandSet<
     });
   }
 
-  filterStringBuilder(a: { checkboxes: any[]; field: any }[]): string {
-    let filterString: string = "";
-    let addAnd: boolean = false;
-    a.forEach((el, indexField) => {
-      if (el.checkboxes.length > 0) {
-        addAnd = true;
-        filterString += ` ( `;
-        el.checkboxes.forEach((elCheckbox, indexCheckbox) => {
-          if (indexCheckbox > 0 && el.checkboxes.length > 1) {
-            filterString += ` or `;
-          }
-          typeof elCheckbox === "number" || elCheckbox === null
-            ? (filterString += `${el.field} eq ${elCheckbox}`)
-            : (filterString += `${el.field} eq '${elCheckbox}'`);
-        });
-        filterString += ` ) `;
-      }
-      //aggiunge un 'or' se il prossimo field ha dei checkbox
-      try {
-        if (addAnd && a[indexField + 1].checkboxes.length > 0) {
-          filterString += ` and `;
-        }
-      } catch (e) { }
-    });
-    return filterString;
-  }
-  filterString = "";
   @override
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
     var checkboxes;
