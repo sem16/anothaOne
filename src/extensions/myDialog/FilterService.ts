@@ -226,6 +226,3 @@ interface IFilters {
   checkboxes: any[];
 }
 
-interface Properties {
-  context: ListViewCommandSetContext;
-}
