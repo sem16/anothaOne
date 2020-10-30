@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://regmarg.sharepoint.com/sites/Quick/Lists/Cartadiidentita/AllItems.aspx",
+      "customActions": {
+        "0e7dbb86-2c21-495a-90b4-968cc78ea558": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    },
+    "helloWorld": {
+      "pageUrl": "https://regmarg.sharepoint.com/sites/Quick/Lists/Cartadiidentita/AllItems.aspx",
+      "customActions": {
+        "0e7dbb86-2c21-495a-90b4-968cc78ea558": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    }
+  }
+}
