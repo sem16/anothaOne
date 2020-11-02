@@ -4,7 +4,7 @@ import { ConvertToXlsx } from "./ConvertToXlsx";
 import { exclude } from "./excluded";
 
 export class FilterService {
-  private context;
+  private context: ListViewCommandSetContext;
   private filterString = "";
   fields: IFieldInfo[];
   constructor(_context) {
@@ -12,7 +12,7 @@ export class FilterService {
   }
   async cheangeColumnName(jsonList: any) {
     let keys;
-
+    let fieldNotInListview: Boolean = true;
     for (let i = 0; i < jsonList.length; i++) {
       exclude.forEach((element) => {
         try {
@@ -23,15 +23,32 @@ export class FilterService {
       });
     }
     jsonList.forEach((column) => {
+      keys = Object.keys(column);
+      //cambia gli internal name in display name
       this.fields.forEach((res) => {
-        keys = Object.keys(column);
-        keys.forEach((el) => {
-          if (el === res.StaticName) {
-            column[res.Title] = column[el];
-            delete column[el];
+        keys.forEach((key) => {
+          if (key === res.StaticName && key !== res.Title) {
+            column[res.Title] = column[key];
+            delete column[key];
+          }
+          if(res.TypeAsString === 'DateTime'){
+            try{ column[res.Title] = column[res.Title].substring(0,10 );
+            } catch{}
           }
         });
       });
+      Object.keys(column).forEach((key) => {
+        //cancella i field non presenti nella list view
+        this.context.listView.columns.forEach(col =>  {
+          if(col.field.displayName === key || key === "Nome società")
+            fieldNotInListview = false;
+        });
+        if(fieldNotInListview){
+          delete column[key];
+        }
+        fieldNotInListview = true;
+      })
+
     });
   }
 
@@ -117,7 +134,7 @@ export class FilterService {
                   console.log(saveFilters[j - 1].checkboxes[i]);
                 } else {
                   try {
-                    if((value === "(Empty)") || !(value === "(Vuoto)")){
+                    if(( value === "(Empty)" && !(value === "(Vuoto))" ) || ( !(value === "(Empty)") && (value === "(Vuoto)") ))){
                       saveFilters[j - 1].checkboxes.push(null);
                     }
                     else{
